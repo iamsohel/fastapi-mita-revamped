@@ -5,8 +5,18 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.14.0",
+    "fastapi-sqlalchemy>=0.2.1",
     "fastapi[standard]>=0.115.6",
     "pre-commit>=4.0.1",
+    "psycopg2>=2.9.10",
+    "pydantic-settings>=2.7.0",
+    "pydantic>=2.10.4",
+    "python-dotenv>=1.0.1",
+    "sqlacodegen>=2.3.0.post1",
+    "slowapi>=0.1.9",
+    "pyjwt>=2.10.1",
+    "passlib[bcrypt]>=1.7.4",
 ]
 
 [dependency-groups]

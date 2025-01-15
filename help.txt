@@ -1,0 +1,10 @@
+ sqlacodegen postgresql://db_user:db_password@localhost:5432/memorizeitall_dev_db --outfile models.py
+
+alembic init alembic
+change alembic.ini file for sqlalchemy.url and script_location
+and change env model metadata
+alembic revision --autogenerate
+alembic revision -m "create account table
+alembic revision -m "Add a column"
+alembic upgrade head
+alembic downgrade base

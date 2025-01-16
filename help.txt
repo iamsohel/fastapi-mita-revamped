@@ -1,4 +1,4 @@
- sqlacodegen postgresql://db_user:db_password@localhost:5432/memorizeitall_dev_db --outfile models.py
+ sqlacodegen postgresql://db_user:db_password@localhost:5432/db_name --outfile models.py
 
 alembic init alembic
 change alembic.ini file for sqlalchemy.url and script_location

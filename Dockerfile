@@ -1,18 +1,15 @@
 FROM python:3.13.0-slim
 
+COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
 
 ENV PYTHONUNBUFFERED=1
-
-COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
 
 ENV UV_COMPILE_BYTE=1
 
 ENV UV_LINK_MODE=copy
-
-# Change the working directory to the `app` directory
-WORKDIR /app
-
 ENV PATH="/app/.venv/bin:$PATH"
+
+WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
     gcc \
@@ -28,7 +25,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --frozen --no-install-project --no-dev
 
-# RUN uv pip install --system uvicorn
+
 # Copy the project into the image
 COPY . .
 

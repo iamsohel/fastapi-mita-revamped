@@ -1,0 +1,41 @@
+services:
+  web:
+    # Build the image from the Dockerfile in the current directory
+    build: .
+
+    # Host the FastAPI application on port 8000
+    ports:
+      - "8083:8083"
+
+    develop:
+      # Create a `watch` configuration to update the app
+      # https://docs.docker.com/compose/file-watch/#compose-watch-versus-bind-mounts
+      watch:
+        # Sync the working directory with the `/app` directory in the container
+        - action: sync
+          path: .
+          target: /app
+          # Exclude the project virtual environment — it could be for a
+          # different platform in the container
+          ignore:
+            - .venv/
+
+        # Rebuild the image if dependencies change by checking uv.lock
+        - action: rebuild
+          path: ./uv.lock
+  mita-postgres-db:
+    image: postgres:13.0-alpine
+    container_name: mita-postgres-db
+    environment:
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_password
+      POSTGRES_DB: mita
+
+    volumes:
+      - mita-volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: on-failure
+
+volumes:
+  mita-volume:

@@ -18,7 +18,7 @@ log = logging.getLogger(__name__)
 # we create the ASGI for the app
 app = FastAPI(
     title="MyAPI",
-    description="Welcome to MyAPI's API documentation! Here you will able to discover all of the ways you can interact with the MyAPI API.",
+    description="Welcome to MyAPI's API documentation! Here you will able to discover all of the ways you can interact with the MyAPI APIs.",
     root_path="/api/v1",
     openapi_url="/docs/openapi.json",
     redoc_url="/docs",

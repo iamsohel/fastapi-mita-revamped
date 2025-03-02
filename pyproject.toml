@@ -17,6 +17,8 @@ dependencies = [
     "slowapi>=0.1.9",
     "pyjwt>=2.10.1",
     "passlib[bcrypt]>=1.7.4",
+    "uvicorn[standard]>=0.34.0",
+    "psycopg2-binary>=2.9.10",
 ]
 
 [dependency-groups]

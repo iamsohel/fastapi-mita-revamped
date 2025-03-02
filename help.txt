@@ -8,3 +8,11 @@ alembic revision -m "create account table
 alembic revision -m "Add a column"
 alembic upgrade head
 alembic downgrade base
+
+------ inside docker container, run alembic ----
+docker exec -it dac4d9082d15 sh
+alembic upgrade head
+
+----
+uv sync
+uv run fastapi dev app/main.py

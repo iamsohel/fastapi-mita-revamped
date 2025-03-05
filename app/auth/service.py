@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from typing import Union
+from typing import Any, Union
 
 import jwt
 from fastapi import Depends, HTTPException, status
@@ -106,7 +106,7 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     return encoded_jwt
 
 
-async def get_current_user(
+async def access_token_verify(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
 ):
     credentials_exception = HTTPException(
@@ -130,8 +130,22 @@ async def get_current_user(
     return user
 
 
-async def get_current_active_user(
-    current_user: UserResponse = Depends(get_current_user),
+async def get_current_user(
+    current_user: UserResponse = Depends(access_token_verify),
 ):
-    print(get_current_user)
+    print(access_token_verify)
     return current_user
+
+
+class RoleChecker:
+    def __init__(self, allowed_roles: list[str]) -> None:
+        self.allowed_roles = allowed_roles
+
+    def __call__(self, current_user: User = Depends(get_current_user)) -> Any:
+        if current_user.role in self.allowed_roles:
+            return True
+
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have enough permissions to perform this action",
+        )

@@ -1,0 +1,6 @@
+1. api endpoint protected
+2. email send
+3. role based
+4. testing
+5. background tasks
+6. caching

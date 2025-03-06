@@ -1,9 +1,11 @@
 import json
 import logging
+import time
 from datetime import datetime
 
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 from slowapi import _rate_limit_exceeded_handler
@@ -109,6 +111,20 @@ app.add_middleware(
 # ========== 🔹 MIDDLEWARE ==========
 app.add_middleware(ExceptionMiddleware)
 app.add_middleware(LoggingMiddleware)
+app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
+
+
+@app.middleware("http")
+async def custom_logging(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    processing_time = time.time() - start_time
+
+    message = f"{request.client.host}:{request.client.port} - {request.method} - {request.url.path} - {response.status_code} completed after {processing_time}s"
+
+    print(message)
+    return response
+
 
 # ========== 🔹 RATE LIMITING ==========
 app.state.limiter = limiter

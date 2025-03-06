@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.auth.service import RoleChecker, access_token_verify
 from app.database.core import get_db
+from app.mail import create_message, mail
 
 from .service import LanguageService
 from .shemas import LanguageCreate, LanguageResponse, LanguageUpdate
@@ -25,6 +26,12 @@ async def get_all_languages(
     language = language_service.get_all_languages(
         db, skip, limit, search, sort_by, order
     )
+    message = create_message(
+        recipients=["sohel0911@gmail.com"],
+        subject="Welcome",
+        body="<h1> Welcome to my api mail</h1>",
+    )
+    await mail.send_message(message)
     return language
 
 
